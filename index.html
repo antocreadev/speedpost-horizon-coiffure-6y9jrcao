@@ -37,19 +37,11 @@
   .eyebrow{font-family:'Space Mono',monospace; text-transform:uppercase; letter-spacing:.18em; font-size:.72rem; color:var(--ink-2);}
   .topo{font-family:'Space Mono',monospace; letter-spacing:.04em; font-size:.74rem; color:var(--ink-2);}
 
-  /* reveals */
-  .js-ready [data-reveal]{opacity:0; transform:translateY(18px); animation:autoreveal .55s cubic-bezier(.2,.7,.2,1) .2s forwards;}
-  @keyframes autoreveal{to{opacity:1; transform:translateY(0);}}
+  /* contenu toujours visible : aucune apparition liée au scroll */
+  [data-reveal]{opacity:1; transform:none;}
 
-  /* horizon line stroke draw */
-  .horizon-path{
-    stroke-dasharray:var(--len,2000);
-    stroke-dashoffset:var(--len,2000);
-  }
-  .js-ready .horizon-path.draw-now{
-    animation:drawline 1.4s cubic-bezier(.2,.7,.2,1) .25s forwards;
-  }
-  @keyframes drawline{to{stroke-dashoffset:0;}}
+  /* lignes d'horizon : dessinées d'emblée, aucun tracé lié au scroll */
+  .horizon-path{stroke-dasharray:none; stroke-dashoffset:0;}
 
   /* scrim on photos */
   .scrim{
@@ -65,9 +57,10 @@
   .marq-word{color:var(--ink); transition:color .25s;}
   .marq-word:hover{color:var(--accent);}
   .scis{display:inline-block; width:14px; height:14px; flex:0 0 auto; background:no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A07840' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='6' cy='6' r='3'/%3E%3Ccircle cx='6' cy='18' r='3'/%3E%3Cline x1='20' y1='4' x2='8.12' y2='15.88'/%3E%3Cline x1='14.47' y1='14.48' x2='20' y2='20'/%3E%3Cline x1='8.12' y1='8.12' x2='12' y2='12'/%3E%3C/svg%3E");}
-  .marquee{display:flex; width:max-content; animation:marquee 42s linear infinite;}
-  .marquee:hover{animation-play-state:paused;}
-  @keyframes marquee{to{transform:translateX(-50%);}}
+  /* bandeau prestations : statique, centré, aucun défilement automatique */
+  .marquee{display:flex; flex-wrap:wrap; justify-content:center; width:auto;}
+  .marquee [data-mq-group]:nth-child(2){display:none;}
+  .marquee [data-mq-group]{flex-wrap:wrap; justify-content:center;}
 
   /* summits / prestations */
   .summit{transition:transform .22s cubic-bezier(.2,.7,.2,1);}
@@ -554,28 +547,9 @@
   // year
   const y = document.getElementById('year'); if(y) y.textContent = new Date().getFullYear();
 
-  let inView;
-  try {
-    const m = await import('https://cdn.jsdelivr.net/npm/motion@10.18.0/+esm');
-    inView = m.inView;
-  } catch(e){ /* CSS autoreveal fallback handles visibility */ }
-
-  // Scroll natif : aucun hijack (Lenis retiré). Le smooth des ancres vient de
-  // html{scroll-behavior:smooth} en CSS. Aucun effet collé à la position de scroll.
-
-  // Horizon section lines : tracées UNE fois quand la section apparaît (pas
-  // lié à la position de scroll, donc pas de saccade). CSS transition gère le dessin.
-  document.querySelectorAll('.section-line').forEach(p=>{
-    const len = parseFloat(getComputedStyle(p).getPropertyValue('--len')) || 1300;
-    p.style.transition = 'stroke-dashoffset 1s ease';
-    p.style.strokeDashoffset = String(len);
-  });
-  if (inView) {
-    inView('.section-line', (info)=>{ info.target.style.strokeDashoffset = '0'; }, { amount: 0.2 });
-    inView('[data-reveal]', ()=>{ /* CSS keyframe via .js-ready */ }, { amount: 0.15 });
-  } else {
-    document.querySelectorAll('.section-line').forEach(p=>p.style.strokeDashoffset='0');
-  }
+  // SCROLL 100% NATIF : aucune lib de scroll, aucun effet lié au scroll,
+  // aucune animation d'apparition. Tout le contenu est visible d'emblée (CSS).
+  // Smooth des ancres = CSS html{scroll-behavior:smooth} uniquement.
 
   // Summits: tap toggle on touch / no-hover
   const summits = document.querySelectorAll('.summit');
