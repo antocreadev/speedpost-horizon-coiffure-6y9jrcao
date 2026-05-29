@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Horizon Coiffure : salon de coiffure mixte à Vico, Liamone (Corse)</title>
+<meta name="description" content="Horizon Coiffure, le seul salon de coiffure mixte de Vico, dans le Liamone (Corse-du-Sud). Femme, homme, enfant, barbier, couleur, coiffure de mariage. Ouvert toute l'année. Appelez le 04 95 28 08 62." />
+<meta name="theme-color" content="#F2F0E9" />
+<meta property="og:title" content="Horizon Coiffure : salon mixte à Vico, Liamone" />
+<meta property="og:description" content="Le seul salon du village. Femme, homme, enfant, barbier, couleur, mariage. Ouvert toute l'année à Vico (Corse-du-Sud)." />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="./assets/images/hero-barbier-chaise.avif" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Outfit:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="./tailwind.css" />
+
+<style>
+  :root{
+    --bg:#F2F0E9; --ink:#2B3422; --ink-2:#6E7361; --accent:#A07840; --line:#D8D2C2;
+  }
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg); color:var(--ink); font-family:'Outfit',system-ui,sans-serif; -webkit-font-smoothing:antialiased; overflow-x:hidden;}
+  ::selection{background:var(--accent); color:#fff;}
+
+  /* paper grain : granite light */
+  body::before{
+    content:""; position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.5;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+  #app{position:relative; z-index:1;}
+
+  .font-display{font-family:'Fraunces',Georgia,serif;}
+  .font-mono{font-family:'Space Mono',monospace;}
+
+  .eyebrow{font-family:'Space Mono',monospace; text-transform:uppercase; letter-spacing:.18em; font-size:.72rem; color:var(--ink-2);}
+  .topo{font-family:'Space Mono',monospace; letter-spacing:.04em; font-size:.74rem; color:var(--ink-2);}
+
+  /* reveals */
+  .js-ready [data-reveal]{opacity:0; transform:translateY(18px); animation:autoreveal .55s cubic-bezier(.2,.7,.2,1) .2s forwards;}
+  @keyframes autoreveal{to{opacity:1; transform:translateY(0);}}
+
+  /* horizon line stroke draw */
+  .horizon-path{
+    stroke-dasharray:var(--len,2000);
+    stroke-dashoffset:var(--len,2000);
+  }
+  .js-ready .horizon-path.draw-now{
+    animation:drawline 1.4s cubic-bezier(.2,.7,.2,1) .25s forwards;
+  }
+  @keyframes drawline{to{stroke-dashoffset:0;}}
+
+  /* scrim on photos */
+  .scrim{
+    position:absolute; inset:0; z-index:2; pointer-events:none;
+    background:
+      radial-gradient(60% 45% at 50% 52%, rgba(20,24,14,.42) 0%, transparent 70%),
+      linear-gradient(180deg, rgba(20,24,14,.58) 0%, rgba(20,24,14,.16) 22%, transparent 45%, transparent 58%, rgba(20,24,14,.36) 84%, rgba(20,24,14,.72) 100%);
+  }
+  .photo-tone{filter:brightness(.92) saturate(1.05) contrast(1.03);}
+  .on-photo{color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.45), 0 2px 18px rgba(0,0,0,.35);}
+
+  /* marquee */
+  .marq-word{color:var(--ink); transition:color .25s;}
+  .marq-word:hover{color:var(--accent);}
+  .scis{display:inline-block; width:14px; height:14px; flex:0 0 auto; background:no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A07840' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='6' cy='6' r='3'/%3E%3Ccircle cx='6' cy='18' r='3'/%3E%3Cline x1='20' y1='4' x2='8.12' y2='15.88'/%3E%3Cline x1='14.47' y1='14.48' x2='20' y2='20'/%3E%3Cline x1='8.12' y1='8.12' x2='12' y2='12'/%3E%3C/svg%3E");}
+  .marquee{display:flex; width:max-content; animation:marquee 42s linear infinite;}
+  .marquee:hover{animation-play-state:paused;}
+  @keyframes marquee{to{transform:translateX(-50%);}}
+
+  /* summits / prestations */
+  .summit{transition:transform .22s cubic-bezier(.2,.7,.2,1);}
+  .summit-card{
+    opacity:0; transform:scale(.96) translateY(8px); pointer-events:none;
+    transition:opacity .22s cubic-bezier(.2,.7,.2,1), transform .22s cubic-bezier(.2,.7,.2,1);
+  }
+  .summit[aria-expanded="true"]{transform:translateY(-10px);}
+  .summit[aria-expanded="true"] .pic-dot{background:var(--accent); transform:scale(1.35);}
+  .summit[aria-expanded="true"] + .summit-card,
+  .summit-wrap.open .summit-card{
+    opacity:1; transform:scale(1) translateY(0); pointer-events:auto;
+  }
+  @media(hover:hover){
+    .summit-wrap:hover .summit{transform:translateY(-10px);}
+    .summit-wrap:hover .summit .pic-dot{background:var(--accent); transform:scale(1.35);}
+    .summit-wrap:hover .summit-card{opacity:1; transform:scale(1) translateY(0); pointer-events:auto;}
+  }
+  .pic-dot{transition:transform .22s cubic-bezier(.2,.7,.2,1), background .22s;}
+
+  /* fanion sway */
+  .fanion{animation:sway 5s ease-in-out infinite alternate; transition:transform .25s, box-shadow .25s;}
+  .fanion:nth-child(2){animation-delay:-1.6s;}
+  .fanion:nth-child(3){animation-delay:-3.1s;}
+  @keyframes sway{from{transform:rotate(-.9deg);}to{transform:rotate(.9deg);}}
+  .fanion:hover{transform:translateY(-3px) rotate(0deg); box-shadow:0 14px 30px -16px rgba(43,52,34,.45);}
+
+  /* call pulse on mobile cta */
+  @media(max-width:768px){
+    .cta-pulse{animation:pulse 2.6s ease-in-out infinite;}
+  }
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(160,120,64,0);}50%{box-shadow:0 0 0 8px rgba(160,120,64,.12);}}
+
+  .link-anim{position:relative;}
+  .link-anim::after{content:""; position:absolute; left:0; bottom:-3px; width:100%; height:1px; background:var(--accent); transform:scaleX(0); transform-origin:right; transition:transform .3s cubic-bezier(.2,.7,.2,1);}
+  .link-anim:hover::after{transform:scaleX(1); transform-origin:left;}
+
+  .open-dot{width:8px; height:8px; border-radius:999px; display:inline-block;}
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none !important; transition:none !important;}
+    .js-ready [data-reveal]{opacity:1 !important; transform:none !important;}
+    .horizon-path{stroke-dashoffset:0 !important;}
+  }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ============ NAV ============ -->
+  <header class="fixed top-0 inset-x-0 z-50">
+    <nav class="max-w-[1240px] mx-auto px-5 md:px-8 h-[68px] flex items-center justify-between" style="background:rgba(242,240,233,.82); backdrop-filter:blur(10px);">
+      <a href="#top" class="font-display text-[1.35rem] md:text-[1.5rem] font-semibold tracking-tight leading-none" style="color:var(--ink);">Horizon<span style="color:var(--accent);">.</span></a>
+      <div class="hidden md:flex items-center gap-9 text-[.95rem]" style="color:var(--ink-2);">
+        <a href="#le-salon" class="link-anim">Le salon</a>
+        <a href="#prestations" class="link-anim">Prestations</a>
+        <a href="#avis" class="link-anim">Avis</a>
+        <a href="#trouver" class="link-anim">Trouver</a>
+      </div>
+      <a href="tel:0495280862" class="cta-pulse inline-flex items-center gap-2 rounded-full px-4 md:px-5 py-2.5 text-[.85rem] md:text-[.9rem] font-medium text-white" style="background:var(--accent);">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span class="hidden sm:inline">Appeler</span>
+        <span class="sm:hidden">04 95</span>
+      </a>
+    </nav>
+    <div class="h-px w-full" style="background:linear-gradient(90deg, transparent, var(--accent) 12%, var(--accent) 88%, transparent);"></div>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section id="top" class="relative pt-[68px] min-h-[100svh] flex flex-col">
+    <div class="max-w-[1240px] mx-auto w-full px-5 md:px-8 pt-10 md:pt-16 flex-1 flex flex-col">
+
+      <p class="topo text-center" data-reveal>VICO · LIAMONE · CORSE-DU-SUD · ALT. 410 M</p>
+
+      <div class="text-center mt-6 md:mt-10" data-reveal>
+        <h1 class="font-display font-semibold leading-[.86] tracking-[-0.03em]" style="font-size:clamp(3.4rem,17vw,9.5rem); color:var(--ink);">HORIZON</h1>
+        <p class="font-display font-light tracking-[.02em] mt-1" style="font-size:clamp(1.4rem,5vw,2.6rem); color:var(--accent);">Coiffure</p>
+      </div>
+
+      <!-- the horizon skyline -->
+      <div class="relative mt-7 md:mt-10" data-reveal>
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="w-full" style="height:clamp(64px,11vw,120px);" aria-hidden="true">
+          <path class="horizon-path draw-now" id="hero-line" style="--len:1560;"
+            d="M0,92 L120,70 L168,84 L240,40 L300,66 L372,30 L420,58 L504,18 L560,52 L636,36 L708,70 L772,44 L852,78 L924,52 L996,82 L1068,60 L1140,86 L1200,72"
+            fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <div class="max-w-2xl mx-auto text-center mt-2 md:mt-4 px-1" data-reveal>
+        <p class="font-display font-light leading-snug tracking-[-0.01em]" style="font-size:clamp(1.15rem,3.4vw,1.75rem); color:var(--ink);">Le seul salon du village, sous la ligne d'horizon du Liamone.</p>
+        <p class="mt-4 text-[1rem] md:text-[1.05rem] leading-relaxed" style="color:var(--ink-2);">À Vico, entre les gorges du Liamone et le golfe de Sagone, Horizon Coiffure habille les têtes de tout le village depuis son point de granit. Femme, homme, enfant, barbier, couleur, mariage : tout se fait ici, sans descendre à Ajaccio.</p>
+
+        <div class="mt-7 flex flex-col sm:flex-row gap-3 justify-center">
+          <a href="tel:0495280862" class="cta-pulse inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 font-medium text-white" style="background:var(--accent);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Appeler le salon
+          </a>
+          <a href="#prestations" class="inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 font-medium border" style="border-color:var(--ink); color:var(--ink);">Voir les prestations</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- hero band photo (sol sous l'horizon) -->
+    <div class="relative mt-9 md:mt-12 w-full overflow-hidden" data-reveal>
+      <div class="relative w-full" style="aspect-ratio:21/9; max-height:46vh;">
+        <img id="hero-image" src="./assets/images/hero-barbier-chaise.avif" alt="Ambiance barbier, lumière chaude" loading="eager" fetchpriority="high" class="photo-tone absolute inset-0 w-full h-full object-cover" style="will-change:transform;" />
+        <div class="scrim"></div>
+        <p class="on-photo absolute left-1/2 -translate-x-1/2 bottom-5 md:bottom-7 eyebrow" style="color:#FFE7B8;">Ambiance du métier · le geste qui prend le temps</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MARQUEE MIXTE ============ -->
+  <section aria-label="Nos prestations" class="py-7 md:py-9 border-y overflow-hidden" style="border-color:var(--line);">
+    <div class="marquee items-center gap-0 select-none" id="mixte-marquee">
+      <!-- group repeated twice for seamless loop -->
+      <div class="flex items-center shrink-0" data-mq-group>
+        <span class="marq-word font-display font-light px-8" style="font-size:clamp(1.4rem,3.6vw,2.4rem);">Femme</span><span class="scis"></span>
+        <span class="marq-word font-display font-light px-8" style="font-size:clamp(1.4rem,3.6vw,2.4rem);">Homme</span><span class="scis"></span>
+        <span class="marq-word font-display font-light px-8" style="font-size:clamp(1.4rem,3.6vw,2.4rem);">Enfant</span><span class="scis"></span>
+        <span class="marq-word font-display font-light px-8" style="font-size:clamp(1.4rem,3.6vw,2.4rem);">Barbier</span><span class="scis"></span>
+        <span class="marq-word font-display font-light px-8" style="font-size:clamp(1.4rem,3.6vw,2.4rem);">Couleur</span><span class="scis"></span>
+        <span class="marq-word font-display font-light px-8" style="font-size:clamp(1.4rem,3.6vw,2.4rem);">Mariage</span><span class="scis"></span>
+        <span class="marq-word font-display font-light px-8" style="font-size:clamp(1.4rem,3.6vw,2.4rem);">Visagiste</span><span class="scis"></span>
+        <span class="marq-word font-display font-light px-8" style="font-size:clamp(1.4rem,3.6vw,2.4rem);">Défrisage</span><span class="scis"></span>
+      </div>
+      <div class="flex items-center shrink-0" aria-hidden="true">
+        <span class="marq-word font-display font-light px-8" style="font-size:clamp(1.4rem,3.6vw,2.4rem);">Femme</span><span class="scis"></span>
+        <span class="marq-word font-display font-light px-8" style="font-size:clamp(1.4rem,3.6vw,2.4rem);">Homme</span><span class="scis"></span>
+        <span class="marq-word font-display font-light px-8" style="font-size:clamp(1.4rem,3.6vw,2.4rem);">Enfant</span><span class="scis"></span>
+        <span class="marq-word font-display font-light px-8" style="font-size:clamp(1.4rem,3.6vw,2.4rem);">Barbier</span><span class="scis"></span>
+        <span class="marq-word font-display font-light px-8" style="font-size:clamp(1.4rem,3.6vw,2.4rem);">Couleur</span><span class="scis"></span>
+        <span class="marq-word font-display font-light px-8" style="font-size:clamp(1.4rem,3.6vw,2.4rem);">Mariage</span><span class="scis"></span>
+        <span class="marq-word font-display font-light px-8" style="font-size:clamp(1.4rem,3.6vw,2.4rem);">Visagiste</span><span class="scis"></span>
+        <span class="marq-word font-display font-light px-8" style="font-size:clamp(1.4rem,3.6vw,2.4rem);">Défrisage</span><span class="scis"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LE SALON ============ -->
+  <section id="le-salon" class="relative py-20 md:py-28">
+    <!-- low-altitude horizon line behind -->
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none" class="absolute left-0 right-0 top-1/3 w-full pointer-events-none" style="height:80px; opacity:.5;" aria-hidden="true">
+      <path class="horizon-path section-line" style="--len:1320;" d="M0,54 L160,40 L260,56 L360,28 L470,50 L580,34 L690,58 L800,38 L910,56 L1020,40 L1130,58 L1200,48" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+    </svg>
+
+    <div class="relative max-w-[1240px] mx-auto px-5 md:px-8 grid md:grid-cols-12 gap-10 md:gap-14 items-center">
+      <div class="md:col-span-5" data-reveal>
+        <p class="eyebrow mb-4">Le lieu</p>
+        <h2 class="font-display font-light leading-tight tracking-[-0.02em]" style="font-size:clamp(2rem,5.5vw,3.2rem); color:var(--ink);">Un salon, un village, un horizon.</h2>
+        <p class="mt-6 text-[1.05rem] leading-relaxed" style="color:var(--ink-2);">
+          <span class="font-display float-left mr-3 mt-1 leading-[.7]" style="font-size:3.4rem; color:var(--accent);">V</span>ico veille sur les premiers contreforts du Monte Rotondo, ses maisons de granit serrées autour du couvent Saint-François fondé en 1481. À mi-chemin entre les gorges du Liamone et les plages du golfe de Sagone, le village vit au rythme de la montagne.
+        </p>
+        <p class="mt-4 text-[1.05rem] leading-relaxed" style="color:var(--ink-2);">Horizon Coiffure y tient un point de convergence : on s'y croise, on s'y retrouve, on prend le temps. Ouvert toute l'année, le salon habille les têtes de tout le Liamone, sans qu'il soit besoin de descendre à Ajaccio.</p>
+        <p class="topo mt-6">RÉFÉRENCÉ VISIT-CORSICA · OUVERT 1ER JANV. AU 31 DÉC.</p>
+      </div>
+
+      <div class="md:col-span-7" data-reveal>
+        <div class="relative">
+          <div class="relative overflow-hidden rounded-[2px]" style="aspect-ratio:4/3; border:1px solid var(--line);">
+            <img src="./assets/images/salon-interieur-lumiere.avif" alt="Intérieur de salon, luminaires suspendus, ambiance chaleureuse" loading="lazy" class="w-full h-full object-cover" />
+          </div>
+          <!-- cachet estampillé -->
+          <div class="absolute -bottom-5 right-4 md:right-6 grid place-items-center rounded-full" style="width:96px; height:96px; background:var(--bg); border:1px solid var(--accent);">
+            <svg viewBox="0 0 96 96" class="absolute inset-0" aria-hidden="true">
+              <defs><path id="circ" d="M48,48 m-34,0 a34,34 0 1,1 68,0 a34,34 0 1,1 -68,0"/></defs>
+              <text font-family="Space Mono, monospace" font-size="9.5" letter-spacing="2.4" fill="#A07840"><textPath href="#circ" startOffset="0">HORIZON · VICO · LIAMONE · 410M · </textPath></text>
+            </svg>
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2B3422" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PRESTATIONS (summits) ============ -->
+  <section id="prestations" class="relative py-20 md:py-28" style="background:#ECE9DF;">
+    <div class="max-w-[1240px] mx-auto px-5 md:px-8">
+      <div class="text-center max-w-2xl mx-auto" data-reveal>
+        <p class="eyebrow mb-4">Les prestations</p>
+        <h2 class="font-display font-light leading-tight tracking-[-0.02em]" style="font-size:clamp(2rem,5.5vw,3.2rem); color:var(--ink);">Tout le salon, sous un même horizon.</h2>
+        <p class="mt-5 text-[1.02rem] leading-relaxed" style="color:var(--ink-2);">Huit sommets sur la même crête. Survolez ou touchez un pic pour révéler la prestation.</p>
+      </div>
+
+      <!-- crest line over the summits -->
+      <div class="relative mt-14 md:mt-20" data-reveal>
+        <svg viewBox="0 0 1200 60" preserveAspectRatio="none" class="absolute -top-7 left-0 w-full pointer-events-none" style="height:60px;" aria-hidden="true">
+          <path class="horizon-path section-line" style="--len:1280;" d="M0,46 L150,30 L300,44 L450,18 L600,40 L750,16 L900,42 L1050,26 L1200,44" fill="none" stroke="var(--accent)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+
+        <div id="summits" class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-12 md:gap-y-16">
+          <!-- each item -->
+          <!-- 1 Mariage (featured highest) -->
+          <div class="summit-wrap relative flex flex-col items-center text-center md:-translate-y-4">
+            <button class="summit group flex flex-col items-center" aria-expanded="false" aria-controls="card-mariage">
+              <span class="pic-dot block rounded-full mb-3" style="width:11px; height:11px; background:var(--accent); box-shadow:0 0 0 4px rgba(160,120,64,.16);"></span>
+              <span class="font-display font-semibold leading-tight" style="font-size:1.15rem; color:var(--ink);">Coiffure de mariage</span>
+              <span class="eyebrow mt-1" style="color:var(--accent);">Le pic le plus haut</span>
+            </button>
+            <div id="card-mariage" class="summit-card mt-4 w-full rounded-[3px] overflow-hidden" style="background:var(--bg); border:1px solid var(--accent);">
+              <div class="overflow-hidden" style="aspect-ratio:1/1;"><img src="./assets/images/coupe-femme-miroir.avif" alt="Coiffure soignée, coiffure de mariage" loading="lazy" class="w-full h-full object-cover"/></div>
+              <p class="text-[.9rem] leading-relaxed px-4 py-3 text-left" style="color:var(--ink-2);">Essais et coiffure du grand jour, planifiés à l'avance. Pour la mariée et son entourage, dans le calme du salon.</p>
+            </div>
+          </div>
+
+          <!-- 2 Femme -->
+          <div class="summit-wrap relative flex flex-col items-center text-center md:translate-y-6">
+            <button class="summit group flex flex-col items-center" aria-expanded="false" aria-controls="card-femme">
+              <span class="pic-dot block rounded-full mb-3" style="width:9px; height:9px; background:var(--ink);"></span>
+              <span class="font-display font-semibold leading-tight" style="font-size:1.15rem; color:var(--ink);">Coupe femme</span>
+            </button>
+            <div id="card-femme" class="summit-card mt-4 w-full rounded-[3px] overflow-hidden" style="background:var(--bg); border:1px solid var(--line);">
+              <div class="overflow-hidden" style="aspect-ratio:1/1;"><img src="./assets/images/femme-salon-seche-cheveux.avif" alt="Coiffage au sèche-cheveux, prestation femme" loading="lazy" class="w-full h-full object-cover"/></div>
+              <p class="text-[.9rem] leading-relaxed px-4 py-3 text-left" style="color:var(--ink-2);">Coupe, brushing et soin, ajustés à votre style et à la saison.</p>
+            </div>
+          </div>
+
+          <!-- 3 Homme -->
+          <div class="summit-wrap relative flex flex-col items-center text-center md:-translate-y-1">
+            <button class="summit group flex flex-col items-center" aria-expanded="false" aria-controls="card-homme">
+              <span class="pic-dot block rounded-full mb-3" style="width:9px; height:9px; background:var(--ink);"></span>
+              <span class="font-display font-semibold leading-tight" style="font-size:1.15rem; color:var(--ink);">Coupe homme</span>
+            </button>
+            <div id="card-homme" class="summit-card mt-4 w-full rounded-[3px] overflow-hidden" style="background:var(--bg); border:1px solid var(--line);">
+              <div class="overflow-hidden" style="aspect-ratio:1/1;"><img src="./assets/images/coupe-ciseau-homme.avif" alt="Coupe aux ciseaux, prestation homme" loading="lazy" class="w-full h-full object-cover"/></div>
+              <p class="text-[.9rem] leading-relaxed px-4 py-3 text-left" style="color:var(--ink-2);">Coupe aux ciseaux et finitions nettes, du classique au moderne.</p>
+            </div>
+          </div>
+
+          <!-- 4 Barbier -->
+          <div class="summit-wrap relative flex flex-col items-center text-center md:translate-y-4">
+            <button class="summit group flex flex-col items-center" aria-expanded="false" aria-controls="card-barbier">
+              <span class="pic-dot block rounded-full mb-3" style="width:9px; height:9px; background:var(--ink);"></span>
+              <span class="font-display font-semibold leading-tight" style="font-size:1.15rem; color:var(--ink);">Barbier</span>
+            </button>
+            <div id="card-barbier" class="summit-card mt-4 w-full rounded-[3px] overflow-hidden" style="background:var(--bg); border:1px solid var(--line);">
+              <div class="overflow-hidden" style="aspect-ratio:1/1;"><img src="./assets/images/chaise-barbier-moderne.avif" alt="Fauteuil de barbier, prestation barbier" loading="lazy" class="w-full h-full object-cover"/></div>
+              <p class="text-[.9rem] leading-relaxed px-4 py-3 text-left" style="color:var(--ink-2);">Taille de barbe et rasage soigné, le temps d'un moment posé.</p>
+            </div>
+          </div>
+
+          <!-- 5 Enfant -->
+          <div class="summit-wrap relative flex flex-col items-center text-center md:translate-y-3">
+            <button class="summit group flex flex-col items-center" aria-expanded="false" aria-controls="card-enfant">
+              <span class="pic-dot block rounded-full mb-3" style="width:9px; height:9px; background:var(--ink);"></span>
+              <span class="font-display font-semibold leading-tight" style="font-size:1.15rem; color:var(--ink);">Coupe enfant</span>
+            </button>
+            <div id="card-enfant" class="summit-card mt-4 w-full rounded-[3px] overflow-hidden" style="background:var(--bg); border:1px solid var(--line);">
+              <div class="overflow-hidden" style="aspect-ratio:1/1;"><img src="./assets/images/brosse-detail-outil.avif" alt="Brosse à cheveux, détail outil" loading="lazy" class="w-full h-full object-cover"/></div>
+              <p class="text-[.9rem] leading-relaxed px-4 py-3 text-left" style="color:var(--ink-2);">Une première coupe en douceur, à hauteur d'enfant et de patience.</p>
+            </div>
+          </div>
+
+          <!-- 6 Couleur -->
+          <div class="summit-wrap relative flex flex-col items-center text-center md:-translate-y-2">
+            <button class="summit group flex flex-col items-center" aria-expanded="false" aria-controls="card-couleur">
+              <span class="pic-dot block rounded-full mb-3" style="width:9px; height:9px; background:var(--ink);"></span>
+              <span class="font-display font-semibold leading-tight" style="font-size:1.15rem; color:var(--ink);">Couleur</span>
+            </button>
+            <div id="card-couleur" class="summit-card mt-4 w-full rounded-[3px] overflow-hidden" style="background:var(--bg); border:1px solid var(--line);">
+              <div class="overflow-hidden" style="aspect-ratio:1/1;"><img src="./assets/images/coupe-femme-miroir.avif" alt="Coiffure soignée illustrant la couleur" loading="lazy" class="w-full h-full object-cover"/></div>
+              <p class="text-[.9rem] leading-relaxed px-4 py-3 text-left" style="color:var(--ink-2);">Coloration, mèches et reflets, du naturel au lumineux.</p>
+            </div>
+          </div>
+
+          <!-- 7 Visagiste -->
+          <div class="summit-wrap relative flex flex-col items-center text-center md:translate-y-5">
+            <button class="summit group flex flex-col items-center" aria-expanded="false" aria-controls="card-visagiste">
+              <span class="pic-dot block rounded-full mb-3" style="width:9px; height:9px; background:var(--ink);"></span>
+              <span class="font-display font-semibold leading-tight" style="font-size:1.15rem; color:var(--ink);">Visagiste</span>
+            </button>
+            <div id="card-visagiste" class="summit-card mt-4 w-full rounded-[3px] overflow-hidden" style="background:var(--bg); border:1px solid var(--line);">
+              <div class="overflow-hidden" style="aspect-ratio:1/1;"><img src="./assets/images/salon-interieur-lumiere.avif" alt="Ambiance salon, conseil visagiste" loading="lazy" class="w-full h-full object-cover"/></div>
+              <p class="text-[.9rem] leading-relaxed px-4 py-3 text-left" style="color:var(--ink-2);">Conseil de coupe pensé pour votre visage et votre allure.</p>
+            </div>
+          </div>
+
+          <!-- 8 Défrisage -->
+          <div class="summit-wrap relative flex flex-col items-center text-center md:-translate-y-3">
+            <button class="summit group flex flex-col items-center" aria-expanded="false" aria-controls="card-defrisage">
+              <span class="pic-dot block rounded-full mb-3" style="width:9px; height:9px; background:var(--ink);"></span>
+              <span class="font-display font-semibold leading-tight" style="font-size:1.15rem; color:var(--ink);">Défrisage</span>
+            </button>
+            <div id="card-defrisage" class="summit-card mt-4 w-full rounded-[3px] overflow-hidden" style="background:var(--bg); border:1px solid var(--line);">
+              <div class="overflow-hidden" style="aspect-ratio:1/1;"><img src="./assets/images/ambiance-chaise-cuir.avif" alt="Ambiance salon, prestation défrisage" loading="lazy" class="w-full h-full object-cover"/></div>
+              <p class="text-[.9rem] leading-relaxed px-4 py-3 text-left" style="color:var(--ink-2);">Lissage et défrisage pour des cheveux souples et faciles à vivre.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="text-center mt-14 md:mt-20" data-reveal>
+        <a href="tel:0495280862" class="inline-flex items-center gap-2 font-medium link-anim" style="color:var(--accent);">Une question sur une prestation ? Appelez le 04 95 28 08 62</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ AMBIANCE (respiration) ============ -->
+  <section class="relative w-full overflow-hidden" aria-label="Ambiance du salon">
+    <div class="relative w-full" style="min-height:62vh;">
+      <img src="./assets/images/ambiance-chaise-cuir.avif" alt="Chaise de barbier en cuir, atmosphère élégante" loading="lazy" class="photo-tone absolute inset-0 w-full h-full object-cover" />
+      <div class="scrim"></div>
+      <!-- horizon over the photo -->
+      <svg viewBox="0 0 1200 60" preserveAspectRatio="none" class="absolute top-1/4 left-0 w-full pointer-events-none z-[3]" style="height:60px;" aria-hidden="true">
+        <path class="horizon-path section-line" style="--len:1280;" d="M0,40 L180,24 L340,42 L500,16 L660,38 L820,18 L980,40 L1140,24 L1200,36" fill="none" stroke="#E9CF95" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="relative z-[4] h-full min-h-[62vh] flex items-center justify-center px-6">
+        <p class="on-photo font-display font-light text-center leading-snug max-w-3xl" style="font-size:clamp(1.5rem,5vw,3rem);">Prendre le temps, là où la montagne touche le ciel.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ AVIS (fanions) ============ -->
+  <section id="avis" class="relative py-20 md:py-28">
+    <div class="max-w-[1240px] mx-auto px-5 md:px-8">
+      <div class="text-center" data-reveal>
+        <p class="eyebrow mb-4">La preuve par le village</p>
+        <h2 class="font-display font-light leading-tight tracking-[-0.02em]" style="font-size:clamp(2rem,5.5vw,3.2rem); color:var(--ink);">Ce que dit le village.</h2>
+        <div class="mt-7 flex flex-col items-center">
+          <div class="flex items-end gap-3">
+            <span class="font-display font-semibold leading-none" style="font-size:clamp(3.5rem,12vw,6rem); color:var(--accent);">4,8</span>
+            <div class="pb-3 text-left">
+              <div class="flex gap-1" aria-label="4,8 sur 5">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#A07840"><polygon points="12,2 15.1,8.6 22,9.3 17,14.1 18.2,21 12,17.6 5.8,21 7,14.1 2,9.3 8.9,8.6"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#A07840"><polygon points="12,2 15.1,8.6 22,9.3 17,14.1 18.2,21 12,17.6 5.8,21 7,14.1 2,9.3 8.9,8.6"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#A07840"><polygon points="12,2 15.1,8.6 22,9.3 17,14.1 18.2,21 12,17.6 5.8,21 7,14.1 2,9.3 8.9,8.6"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#A07840"><polygon points="12,2 15.1,8.6 22,9.3 17,14.1 18.2,21 12,17.6 5.8,21 7,14.1 2,9.3 8.9,8.6"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#A07840"><polygon points="12,2 15.1,8.6 22,9.3 17,14.1 18.2,21 12,17.6 5.8,21 7,14.1 2,9.3 8.9,8.6"/></svg>
+              </div>
+              <p class="topo mt-1">17 AVIS · 14 FOIS LA NOTE MAXIMALE</p>
+            </div>
+          </div>
+          <p class="text-[.95rem] mt-3" style="color:var(--ink-2);">Note Google, pour un seul salon de village.</p>
+        </div>
+      </div>
+
+      <!-- string line above fanions -->
+      <div class="relative mt-16">
+        <svg viewBox="0 0 1200 30" preserveAspectRatio="none" class="absolute -top-8 left-0 w-full pointer-events-none" style="height:30px;" aria-hidden="true">
+          <path class="horizon-path section-line" style="--len:1220;" d="M0,18 L600,8 L1200,20" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        <div class="grid md:grid-cols-3 gap-7 md:gap-8" data-reveal>
+          <figure class="fanion relative rounded-[3px] p-6 pt-9" style="background:var(--bg); border:1px solid var(--line);">
+            <span class="absolute left-1/2 -top-3 -translate-x-1/2 w-2 h-2 rounded-full" style="background:var(--accent);"></span>
+            <div class="flex gap-0.5 mb-3" aria-hidden="true">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="#A07840"><polygon points="12,2 15.1,8.6 22,9.3 17,14.1 18.2,21 12,17.6 5.8,21 7,14.1 2,9.3 8.9,8.6"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="#A07840"><polygon points="12,2 15.1,8.6 22,9.3 17,14.1 18.2,21 12,17.6 5.8,21 7,14.1 2,9.3 8.9,8.6"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="#A07840"><polygon points="12,2 15.1,8.6 22,9.3 17,14.1 18.2,21 12,17.6 5.8,21 7,14.1 2,9.3 8.9,8.6"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="#A07840"><polygon points="12,2 15.1,8.6 22,9.3 17,14.1 18.2,21 12,17.6 5.8,21 7,14.1 2,9.3 8.9,8.6"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="#A07840"><polygon points="12,2 15.1,8.6 22,9.3 17,14.1 18.2,21 12,17.6 5.8,21 7,14.1 2,9.3 8.9,8.6"/></svg>
+            </div>
+            <blockquote class="font-display font-light leading-snug" style="font-size:1.2rem; color:var(--ink);">« Le seul salon du coin, et on n'irait nulle part ailleurs. Toujours bien reçus, toujours bien coiffés. »</blockquote>
+            <figcaption class="topo mt-4">CLIENT DU VILLAGE</figcaption>
+          </figure>
+
+          <figure class="fanion relative rounded-[3px] p-6 pt-9 md:mt-6" style="background:var(--bg); border:1px solid var(--line);">
+            <span class="absolute left-1/2 -top-3 -translate-x-1/2 w-2 h-2 rounded-full" style="background:var(--accent);"></span>
+            <div class="flex gap-0.5 mb-3" aria-hidden="true">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="#A07840"><polygon points="12,2 15.1,8.6 22,9.3 17,14.1 18.2,21 12,17.6 5.8,21 7,14.1 2,9.3 8.9,8.6"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="#A07840"><polygon points="12,2 15.1,8.6 22,9.3 17,14.1 18.2,21 12,17.6 5.8,21 7,14.1 2,9.3 8.9,8.6"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="#A07840"><polygon points="12,2 15.1,8.6 22,9.3 17,14.1 18.2,21 12,17.6 5.8,21 7,14.1 2,9.3 8.9,8.6"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="#A07840"><polygon points="12,2 15.1,8.6 22,9.3 17,14.1 18.2,21 12,17.6 5.8,21 7,14.1 2,9.3 8.9,8.6"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="#A07840"><polygon points="12,2 15.1,8.6 22,9.3 17,14.1 18.2,21 12,17.6 5.8,21 7,14.1 2,9.3 8.9,8.6"/></svg>
+            </div>
+            <blockquote class="font-display font-light leading-snug" style="font-size:1.2rem; color:var(--ink);">« Coupe homme, barbe pour mon mari, couleur pour moi : tout au même endroit, sans descendre à la ville. »</blockquote>
+            <figcaption class="topo mt-4">FAMILLE DU LIAMONE</figcaption>
+          </figure>
+
+          <figure class="fanion relative rounded-[3px] p-6 pt-9" style="background:var(--bg); border:1px solid var(--line);">
+            <span class="absolute left-1/2 -top-3 -translate-x-1/2 w-2 h-2 rounded-full" style="background:var(--accent);"></span>
+            <div class="flex gap-0.5 mb-3" aria-hidden="true">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="#A07840"><polygon points="12,2 15.1,8.6 22,9.3 17,14.1 18.2,21 12,17.6 5.8,21 7,14.1 2,9.3 8.9,8.6"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="#A07840"><polygon points="12,2 15.1,8.6 22,9.3 17,14.1 18.2,21 12,17.6 5.8,21 7,14.1 2,9.3 8.9,8.6"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="#A07840"><polygon points="12,2 15.1,8.6 22,9.3 17,14.1 18.2,21 12,17.6 5.8,21 7,14.1 2,9.3 8.9,8.6"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="#A07840"><polygon points="12,2 15.1,8.6 22,9.3 17,14.1 18.2,21 12,17.6 5.8,21 7,14.1 2,9.3 8.9,8.6"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="#A07840"><polygon points="12,2 15.1,8.6 22,9.3 17,14.1 18.2,21 12,17.6 5.8,21 7,14.1 2,9.3 8.9,8.6"/></svg>
+            </div>
+            <blockquote class="font-display font-light leading-snug" style="font-size:1.2rem; color:var(--ink);">« Accueil chaleureux et travail soigné. On prend le temps, on repart content. »</blockquote>
+            <figcaption class="topo mt-4">CLIENTE FIDÈLE</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TROUVER ============ -->
+  <section id="trouver" class="relative py-20 md:py-28" style="background:#ECE9DF;">
+    <div class="max-w-[1240px] mx-auto px-5 md:px-8">
+      <div class="text-center mb-12 md:mb-16" data-reveal>
+        <p class="eyebrow mb-4">Informations pratiques</p>
+        <h2 class="font-display font-light leading-tight tracking-[-0.02em]" style="font-size:clamp(2rem,5.5vw,3.2rem); color:var(--ink);">Monter jusqu'au salon.</h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-10 md:gap-14 items-start">
+        <!-- left: infos -->
+        <div data-reveal>
+          <div class="flex items-center gap-3 mb-7">
+            <span id="open-dot" class="open-dot" style="background:var(--ink-2);"></span>
+            <span id="open-label" class="font-medium" style="color:var(--ink);">Horaires du salon</span>
+          </div>
+
+          <div class="rounded-[3px] overflow-hidden" style="border:1px solid var(--line);">
+            <table class="w-full text-[.98rem]">
+              <tbody id="hours-table">
+                <tr data-day="1"><td class="px-4 py-3" style="color:var(--ink-2);">Lundi</td><td class="px-4 py-3 text-right font-mono" style="color:var(--ink-2);">Fermé</td></tr>
+                <tr data-day="2" class="border-t" style="border-color:var(--line);"><td class="px-4 py-3">Mardi</td><td class="px-4 py-3 text-right font-mono">09:00 – 18:00</td></tr>
+                <tr data-day="3" class="border-t" style="border-color:var(--line);"><td class="px-4 py-3">Mercredi</td><td class="px-4 py-3 text-right font-mono">09:00 – 18:00</td></tr>
+                <tr data-day="4" class="border-t" style="border-color:var(--line);"><td class="px-4 py-3">Jeudi</td><td class="px-4 py-3 text-right font-mono">09:00 – 18:00</td></tr>
+                <tr data-day="5" class="border-t" style="border-color:var(--line);"><td class="px-4 py-3">Vendredi</td><td class="px-4 py-3 text-right font-mono">09:00 – 18:00</td></tr>
+                <tr data-day="6" class="border-t" style="border-color:var(--line);"><td class="px-4 py-3">Samedi</td><td class="px-4 py-3 text-right font-mono">09:00 – 17:00</td></tr>
+                <tr data-day="0" class="border-t" style="border-color:var(--line);"><td class="px-4 py-3" style="color:var(--ink-2);">Dimanche</td><td class="px-4 py-3 text-right font-mono" style="color:var(--ink-2);">Fermé</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="mt-8 space-y-4">
+            <div>
+              <p class="eyebrow mb-1">Adresse</p>
+              <p class="text-[1.05rem]" style="color:var(--ink);">Lieu-dit Riniccio, 20160 Vico</p>
+              <p class="topo mt-1">42°06'54"N · 8°41'42"E · ALT. 410 M</p>
+            </div>
+            <div>
+              <p class="eyebrow mb-1">Téléphone</p>
+              <a href="tel:0495280862" class="font-display font-light link-anim inline-block" style="font-size:clamp(1.8rem,6vw,2.6rem); color:var(--ink);">04 95 28 08 62</a>
+            </div>
+            <a href="tel:0495280862" class="cta-pulse inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 font-medium text-white mt-2" style="background:var(--accent);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              Appeler pour un rendez-vous
+            </a>
+          </div>
+        </div>
+
+        <!-- right: map -->
+        <div data-reveal>
+          <p class="topo mb-3">42°06'54"N · 8°41'42"E</p>
+          <div class="rounded-[3px] overflow-hidden" style="border:1px solid var(--line);">
+            <iframe
+              title="Localisation Horizon Coiffure à Vico"
+              src="https://maps.google.com/maps?q=42.1150476,8.6949741&z=15&output=embed"
+              width="100%" height="440" style="border:0; filter:grayscale(0.1) contrast(0.97);" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="relative pt-14 pb-10" style="background:var(--bg);">
+    <!-- final horizon descent ending in scissor tip -->
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none" class="w-full pointer-events-none" style="height:70px;" aria-hidden="true">
+      <path class="horizon-path section-line" style="--len:1320;" d="M0,20 L180,34 L360,22 L540,40 L720,30 L900,48 L1040,40 L1130,54" fill="none" stroke="var(--accent)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+      <g transform="translate(1130,54)">
+        <circle cx="6" cy="-4" r="3.4" fill="none" stroke="#A07840" stroke-width="1.3"/>
+        <circle cx="6" cy="8" r="3.4" fill="none" stroke="#A07840" stroke-width="1.3"/>
+        <line x1="20" y1="-7" x2="9" y2="3" stroke="#A07840" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="14" y1="6" x2="20" y2="11" stroke="#A07840" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="9" y1="1" x2="13" y2="5" stroke="#A07840" stroke-width="1.3" stroke-linecap="round"/>
+      </g>
+    </svg>
+
+    <div class="max-w-[1240px] mx-auto px-5 md:px-8 mt-2">
+      <div class="grid md:grid-cols-3 gap-8 items-start">
+        <div class="md:col-span-1">
+          <p class="font-display font-semibold tracking-[-0.02em] leading-none" style="font-size:clamp(2.2rem,7vw,3.2rem); color:var(--ink);">Horizon<span style="color:var(--accent);">.</span></p>
+          <p class="font-display font-light mt-1" style="font-size:1.3rem; color:var(--ink-2);">Coiffure</p>
+          <p class="topo mt-4">VICO · LIAMONE · CORSE-DU-SUD</p>
+        </div>
+        <div class="text-[.95rem] leading-relaxed" style="color:var(--ink-2);">
+          <p class="eyebrow mb-2">Le salon</p>
+          <p>Lieu-dit Riniccio, 20160 Vico</p>
+          <p class="mt-1"><a href="tel:0495280862" class="link-anim" style="color:var(--ink);">04 95 28 08 62</a></p>
+          <p class="mt-3">Femme · Homme · Enfant · Barbier</p>
+          <p>Couleur · Mariage · Visagiste · Défrisage</p>
+        </div>
+        <div class="text-[.95rem] leading-relaxed" style="color:var(--ink-2);">
+          <p class="eyebrow mb-2">Horaires</p>
+          <p>Mardi au vendredi : 09:00 - 18:00</p>
+          <p>Samedi : 09:00 - 17:00</p>
+          <p>Lundi et dimanche : fermé</p>
+          <p class="mt-2">Ouvert toute l'année.</p>
+        </div>
+      </div>
+
+      <div class="mt-10 pt-6 border-t flex flex-col sm:flex-row items-center justify-between gap-3 text-[.82rem]" style="border-color:var(--line); color:var(--ink-2);">
+        <p>© <span id="year"></span> Horizon Coiffure, Vico. Tous droits réservés.</p>
+        <p>Site réalisé par <a href="https://webagentic.speedpost.fr" class="link-anim" style="color:var(--ink);">SpeedPost.fr</a></p>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<script type="module">
+  document.documentElement.classList.add('js-ready');
+
+  // year
+  const y = document.getElementById('year'); if(y) y.textContent = new Date().getFullYear();
+
+  let animate, inView, scroll;
+  try {
+    const m = await import('https://cdn.jsdelivr.net/npm/motion@10.18.0/+esm');
+    animate = m.animate; inView = m.inView; scroll = m.scroll;
+  } catch(e){ /* CSS autoreveal fallback handles visibility */ }
+
+  // Lenis smooth scroll
+  try {
+    const { default: Lenis } = await import('https://cdn.jsdelivr.net/npm/lenis@1.1.13/+esm');
+    const lenis = new Lenis({ duration:1.1, smoothWheel:true });
+    function raf(t){ lenis.raf(t); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        const id = a.getAttribute('href');
+        if(id && id.length>1){ const el=document.querySelector(id); if(el){ e.preventDefault(); lenis.scrollTo(el, {offset:-60}); } }
+      });
+    });
+  } catch(e){ /* native smooth scroll remains */ }
+
+  if (inView) {
+    inView('[data-reveal]', (info)=>{
+      // CSS keyframe already runs via .js-ready; nothing required, but ensure visible
+    }, { amount: 0.15 });
+  }
+
+  // Horizon section lines drawn on scroll
+  if (scroll) {
+    document.querySelectorAll('.section-line').forEach((path)=>{
+      const section = path.closest('section, footer');
+      scroll((p)=>{ path.style.strokeDashoffset = String((1 - p) * (parseFloat(getComputedStyle(path).getPropertyValue('--len'))||1300)); },
+        { target: section, offset: ['start end', 'center center'] });
+    });
+  } else {
+    document.querySelectorAll('.section-line').forEach(p=>p.style.strokeDashoffset='0');
+  }
+
+  // Hero parallax
+  const heroImg = document.getElementById('hero-image');
+  if (scroll && heroImg) {
+    scroll((p)=>{ heroImg.style.transform = 'translateY(' + (p*8) + '%) scale(1.06)'; },
+      { target: document.getElementById('top'), offset: ['start start','end start'] });
+  }
+
+  // Summits: tap toggle on touch / no-hover
+  const summits = document.querySelectorAll('.summit');
+  summits.forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      const wrap = btn.closest('.summit-wrap');
+      const isOpen = wrap.classList.contains('open');
+      // close others
+      document.querySelectorAll('.summit-wrap.open').forEach(w=>{ if(w!==wrap){ w.classList.remove('open'); w.querySelector('.summit').setAttribute('aria-expanded','false'); }});
+      wrap.classList.toggle('open', !isOpen);
+      btn.setAttribute('aria-expanded', String(!isOpen));
+    });
+  });
+
+  // Open / closed now (Europe/Paris)
+  (function openState(){
+    const hours = { 1:null, 2:[9,18], 3:[9,18], 4:[9,18], 5:[9,18], 6:[9,17], 0:null };
+    const dayNames = {1:'lundi',2:'mardi',3:'mercredi',4:'jeudi',5:'vendredi',6:'samedi',0:'dimanche'};
+    let now;
+    try { now = new Date(new Date().toLocaleString('en-US',{timeZone:'Europe/Paris'})); }
+    catch(e){ now = new Date(); }
+    const day = now.getDay();
+    const h = now.getHours() + now.getMinutes()/60;
+    const dot = document.getElementById('open-dot');
+    const label = document.getElementById('open-label');
+    const today = hours[day];
+    let open = false;
+    if (today && h >= today[0] && h < today[1]) open = true;
+
+    // highlight current day row
+    const row = document.querySelector('#hours-table tr[data-day="'+day+'"]');
+    if (row && (day>=2 && day<=6)){ row.style.background = 'rgba(160,120,64,.10)'; row.style.color = 'var(--ink)'; }
+
+    if (open){
+      dot.style.background = '#5C7A3A';
+      label.innerHTML = '<strong style="color:#3F5826;">Ouvert maintenant</strong> · ferme à ' + String(today[1]).padStart(2,'0') + ':00';
+    } else {
+      // find next open day
+      let next=null;
+      for (let i=1;i<=7;i++){ const d=(day+i)%7; if(hours[d]){ next={d, name:dayNames[d], open:hours[d][0]}; break; } }
+      // if today still before opening
+      if (today && h < today[0]) next = {d:day, name:'aujourd\'hui', open:today[0]};
+      dot.style.background = 'var(--ink-2)';
+      const re = next ? (' · réouvre ' + next.name + ' à ' + String(next.open).padStart(2,'0') + ':00') : '';
+      label.innerHTML = '<strong style="color:var(--ink);">Fermé</strong>' + re;
+    }
+  })();
+</script>
+</body>
+</html>
