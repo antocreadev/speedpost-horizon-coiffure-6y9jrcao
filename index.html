@@ -554,48 +554,27 @@
   // year
   const y = document.getElementById('year'); if(y) y.textContent = new Date().getFullYear();
 
-  let animate, inView, scroll;
+  let inView;
   try {
     const m = await import('https://cdn.jsdelivr.net/npm/motion@10.18.0/+esm');
-    animate = m.animate; inView = m.inView; scroll = m.scroll;
+    inView = m.inView;
   } catch(e){ /* CSS autoreveal fallback handles visibility */ }
 
-  // Lenis smooth scroll
-  try {
-    const { default: Lenis } = await import('https://cdn.jsdelivr.net/npm/lenis@1.1.13/+esm');
-    const lenis = new Lenis({ duration:1.1, smoothWheel:true });
-    function raf(t){ lenis.raf(t); requestAnimationFrame(raf); }
-    requestAnimationFrame(raf);
-    document.querySelectorAll('a[href^="#"]').forEach(a=>{
-      a.addEventListener('click', e=>{
-        const id = a.getAttribute('href');
-        if(id && id.length>1){ const el=document.querySelector(id); if(el){ e.preventDefault(); lenis.scrollTo(el, {offset:-60}); } }
-      });
-    });
-  } catch(e){ /* native smooth scroll remains */ }
+  // Scroll natif : aucun hijack (Lenis retiré). Le smooth des ancres vient de
+  // html{scroll-behavior:smooth} en CSS. Aucun effet collé à la position de scroll.
 
+  // Horizon section lines : tracées UNE fois quand la section apparaît (pas
+  // lié à la position de scroll, donc pas de saccade). CSS transition gère le dessin.
+  document.querySelectorAll('.section-line').forEach(p=>{
+    const len = parseFloat(getComputedStyle(p).getPropertyValue('--len')) || 1300;
+    p.style.transition = 'stroke-dashoffset 1s ease';
+    p.style.strokeDashoffset = String(len);
+  });
   if (inView) {
-    inView('[data-reveal]', (info)=>{
-      // CSS keyframe already runs via .js-ready; nothing required, but ensure visible
-    }, { amount: 0.15 });
-  }
-
-  // Horizon section lines drawn on scroll
-  if (scroll) {
-    document.querySelectorAll('.section-line').forEach((path)=>{
-      const section = path.closest('section, footer');
-      scroll((p)=>{ path.style.strokeDashoffset = String((1 - p) * (parseFloat(getComputedStyle(path).getPropertyValue('--len'))||1300)); },
-        { target: section, offset: ['start end', 'center center'] });
-    });
+    inView('.section-line', (info)=>{ info.target.style.strokeDashoffset = '0'; }, { amount: 0.2 });
+    inView('[data-reveal]', ()=>{ /* CSS keyframe via .js-ready */ }, { amount: 0.15 });
   } else {
     document.querySelectorAll('.section-line').forEach(p=>p.style.strokeDashoffset='0');
-  }
-
-  // Hero parallax
-  const heroImg = document.getElementById('hero-image');
-  if (scroll && heroImg) {
-    scroll((p)=>{ heroImg.style.transform = 'translateY(' + (p*8) + '%) scale(1.06)'; },
-      { target: document.getElementById('top'), offset: ['start start','end start'] });
   }
 
   // Summits: tap toggle on touch / no-hover
